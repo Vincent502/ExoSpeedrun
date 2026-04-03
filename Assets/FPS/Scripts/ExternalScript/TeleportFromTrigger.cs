@@ -32,6 +32,16 @@ using UnityEngine;
         [Tooltip("If the object has a Rigidbody, resets its velocity/rotation to zero after teleporting.")]
         public bool resetRigidbodyMotion = true;
 
+        [Header("Audio")]
+        [Tooltip("Son joué à chaque téléportation réussie. Laisser vide pour désactiver.")]
+        public AudioClip teleportSound;
+
+        [Tooltip("Si défini, utilise PlayOneShot sur cette source. Sinon, PlayClipAtPoint à la position choisie.")]
+        public AudioSource audioSource;
+
+        [Tooltip("Si pas d'AudioSource assigné : joue le son à la destination plutôt qu'au trigger.")]
+        public bool playSoundAtDestination = true;
+
         [Header("Debug / Compatibility")]
         [Tooltip("Shows logs to confirm teleportation runs and which position it targets.")]
         public bool debugLogs = true;
@@ -132,6 +142,7 @@ using UnityEngine;
                     rb.linearVelocity = Vector3.zero;
                     rb.angularVelocity = Vector3.zero;
                 }
+                PlayTeleportSound();
                 return;
             }
 
@@ -154,12 +165,36 @@ using UnityEngine;
             }
 
             toMove.position = targetPos;
+            PlayTeleportSound();
+        }
+
+        /// <summary>
+        /// Joue le son de téléportation si un clip est assigné.
+        /// </summary>
+        public void PlayTeleportSound()
+        {
+            if (teleportSound == null)
+            {
+                return;
+            }
+
+            if (audioSource != null)
+            {
+                audioSource.PlayOneShot(teleportSound);
+                return;
+            }
+
+            Vector3 pos = playSoundAtDestination && destinationPoint != null
+                ? destinationPoint.position
+                : transform.position;
+            AudioSource.PlayClipAtPoint(teleportSound, pos);
         }
 
         private System.Collections.IEnumerator TeleportCharacterControllerNextFrame(CharacterController cc, Vector3 targetPos)
         {
             cc.enabled = false;
             cc.transform.position = targetPos;
+            PlayTeleportSound();
             // Wait 1 frame so Unity can recompute internal state properly.
             yield return null;
             cc.enabled = true;
