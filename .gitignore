@@ -76,7 +76,6 @@ crashlytics-build.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
 Assets/FPS/Tutorials
-Assets/UniversalRenderPipelineGlobalSettings.asset
 Packages
 .vsconfig
 ProjectSettings
