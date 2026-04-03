@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 8acb7d1c7e0f50447b38f64cd5247797
+<<<<<<<< HEAD:Assets/Materials/M_NonSolide.mat.meta
+guid: eff052cbabf37b9439cc8ad0c8290afc
+========
+guid: 532ca4bf49f814544a0e5c1d17f5b35e
+>>>>>>>> Uinty10:Assets/Reference/Ref.mat.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
